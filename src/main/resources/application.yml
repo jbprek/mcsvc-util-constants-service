@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+logging:
+  path: ./logs/spring-boot-logger.log
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: ${MCSVC_EUREKA_HOST_1_URL}
+    healthcheck:
+      enabled: true
+

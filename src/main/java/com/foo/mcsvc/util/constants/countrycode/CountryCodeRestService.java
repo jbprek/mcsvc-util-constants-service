@@ -1,4 +1,4 @@
-package constants.currencysymbols;
+package com.foo.mcsvc.util.constants.countrycode;
 
 import lombok.val;
 import org.springframework.http.HttpStatus;
@@ -9,32 +9,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/currencies",
+@RequestMapping(path = "/countries",
         produces = "application/json")
-public class CurrencyCodeRestService {
+public class CountryCodeRestService {
 
-    CurrencyListRepository currencyListRepository;
+    private CountryListRepository repository;
 
-    public CurrencyCodeRestService(CurrencyListRepository currencyListRepository) {
-        this.currencyListRepository = currencyListRepository;
+    public CountryCodeRestService(CountryListRepository repository) {
+        this.repository = repository;
     }
 
     @GetMapping
-    public Iterable<CurrencyCodeInfo> getAll() {
-        return currencyListRepository.getInfoList();
+    public Iterable<CountryCodeInfo> getAll() {
+        return repository.getInfoList();
     }
 
     @GetMapping("/{searchToken}")
-    public ResponseEntity<CurrencyCodeInfo> search(@PathVariable("searchToken") String searchToken) {
+    public ResponseEntity<CountryCodeInfo> search(@PathVariable("searchToken") String searchToken) {
         if (searchToken == null)
             return null;
         val token = searchToken.trim();
         val tokenLen = token.length();
-        CurrencyCodeInfo countryCodeInfo;
-        if (tokenLen == 3) {
-            countryCodeInfo = currencyListRepository.getInfoByCode().get(token);
+        CountryCodeInfo countryCodeInfo;
+        if (tokenLen == 2) {
+            countryCodeInfo = repository.getInfoByAlpha2().get(token);
+        } else if (tokenLen == 3) {
+            countryCodeInfo = repository.getInfoByAlpha3().get(token);
         } else {
-            countryCodeInfo = currencyListRepository.getInfoByName().get(token);
+            countryCodeInfo = repository.getInfoByName().get(token);
         }
         if (countryCodeInfo != null) {
             return ResponseEntity.ok(countryCodeInfo);

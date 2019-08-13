@@ -1,15 +1,8 @@
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    serviceUrl:
-      defaultZone: ${MCSVC_EUREKA_HOST_1_URL}
-
 spring:
   application:
     name: mcsvc-util-constants-service
   cloud:
-    # Config service specifics
+    # Use of config server
     config:
       enabled: true
       discovery:
@@ -20,4 +13,3 @@ spring:
         initial-interval: 8000
         max-attempts: 6
         max-interval: 128000
-

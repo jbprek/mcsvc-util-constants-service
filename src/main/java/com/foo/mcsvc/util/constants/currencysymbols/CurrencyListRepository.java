@@ -1,4 +1,4 @@
-package constants.currencysymbols;
+package com.foo.mcsvc.util.constants.currencysymbols;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
