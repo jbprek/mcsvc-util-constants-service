@@ -1,4 +1,4 @@
-package com.foo.mcsvc.util.constants.countrycode;
+package org.bagab.mcsvc.util.constants.countrycode;
 
 import lombok.val;
 import org.springframework.http.HttpStatus;
@@ -26,6 +26,7 @@ public class CountryCodeRestService {
 
     @GetMapping("/{searchToken}")
     public ResponseEntity<CountryCodeInfo> search(@PathVariable("searchToken") String searchToken) {
+        // TODO Bad Request
         if (searchToken == null)
             return null;
         val token = searchToken.trim();

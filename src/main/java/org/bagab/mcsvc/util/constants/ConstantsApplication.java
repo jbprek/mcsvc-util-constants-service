@@ -1,4 +1,4 @@
-package com.foo.mcsvc.util.constants;
+package org.bagab.mcsvc.util.constants;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ public class ConstantsApplication {
 
     @PostConstruct
     public void setup() {
-        log.info("Started  EUREKA instance hostname:{}", environment.getProperty("eureka.instance.hostname"));
+        log.info("Started  EUREKA instance :{}", environment.getProperty("eureka.client.serviceUrl.defaultZone"));
     }
 
 

@@ -1,4 +1,4 @@
-package com.foo.mcsvc.util.constants.swagger;
+package org.bagab.mcsvc.util.constants.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

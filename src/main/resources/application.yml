@@ -10,12 +10,4 @@ management:
       exposure:
         include: '*'
 
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    serviceUrl:
-      defaultZone: ${MCSVC_EUREKA_HOST_1_URL}
-    healthcheck:
-      enabled: true
 

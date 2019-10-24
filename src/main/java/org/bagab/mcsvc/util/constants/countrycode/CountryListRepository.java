@@ -1,4 +1,4 @@
-package com.foo.mcsvc.util.constants.countrycode;
+package org.bagab.mcsvc.util.constants.countrycode;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -13,12 +13,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
-@Slf4j
-@Data
 /**
  * List of countries is imported in CSV format and stored in immutable collections for lookup
  */
+@Service
+@Slf4j
+@Data
 public class CountryListRepository {
 
     private final CountryListConfiguration configuration;

@@ -1,4 +1,4 @@
-package com.foo.mcsvc.util.constants.countrycode;
+package org.bagab.mcsvc.util.constants.countrycode;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;

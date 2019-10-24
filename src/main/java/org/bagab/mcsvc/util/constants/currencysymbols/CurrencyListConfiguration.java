@@ -1,4 +1,4 @@
-package com.foo.mcsvc.util.constants.currencysymbols;
+package org.bagab.mcsvc.util.constants.currencysymbols;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

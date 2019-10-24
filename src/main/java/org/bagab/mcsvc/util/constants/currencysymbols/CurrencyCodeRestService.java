@@ -1,4 +1,4 @@
-package com.foo.mcsvc.util.constants.currencysymbols;
+package org.bagab.mcsvc.util.constants.currencysymbols;
 
 import lombok.val;
 import org.springframework.http.HttpStatus;
@@ -26,6 +26,7 @@ public class CurrencyCodeRestService {
 
     @GetMapping("/{searchToken}")
     public ResponseEntity<CurrencyCodeInfo> search(@PathVariable("searchToken") String searchToken) {
+        // TODO Bad request
         if (searchToken == null)
             return null;
         val token = searchToken.trim();

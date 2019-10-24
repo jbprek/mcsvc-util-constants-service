@@ -1,4 +1,4 @@
-package com.foo.mcsvc.util.constants.currencysymbols;
+package org.bagab.mcsvc.util.constants.currencysymbols;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
