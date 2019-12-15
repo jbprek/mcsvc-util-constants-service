@@ -1,0 +1,69 @@
+version: '3'
+services:
+
+  #Gogs GIT server
+  gogs:
+    container_name: gogs
+    image: gogs/gogs
+    ports:
+      - "3000:3000"
+      - "10022:22"
+    volumes:
+      - gogs-data:/data
+
+  #Eureka Service
+  discovery:
+    container_name: mcsvc-eureka-service
+    image: jbprek/mcsvc-infra-eureka-service:latest
+    ports:
+      - "8761:8761"
+    environment:
+      - EUREKA_HOST=mcsvc-eureka-service
+
+  #Spring cloud config server
+  configservice:
+    container_name: mcsvc-config-service
+    image: jbprek/mcsvc-infra-config-service:latest
+    ports:
+      - "8888:8888"
+    depends_on:
+      - gogs
+      - discovery
+    environment:
+      - EUREKA_HOST=mcsvc-eureka-service
+      - GIT_URL=${GIT_URL}
+      - GIT_USERNAME=${GIT_USERNAME}
+      - GIT_PASSWORD=${GIT_PASSWORD}
+    restart: on-failure
+
+  constants-service:
+    container_name: mcsvc-util-constants-service
+    image: jbprek/mcsvc-util-constants-service:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - configservice
+    environment:
+      - EUREKA_HOST=mcsvc-eureka-service
+    restart: on-failure
+
+volumes:
+  gogs-data:
+    external: true
+
+
+
+
+  #Example microservice using discovery and spring cloud config
+#  admin:
+#    container_name: adminservice
+#    ports:
+#      - "9000:9000"
+#    image: jbprek/mcsvc-infra-admin-service:latest
+#    depends_on:
+#      - discovery
+#      - configservice
+
+
+
+

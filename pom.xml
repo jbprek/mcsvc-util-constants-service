@@ -5,7 +5,7 @@
 
     <groupId>mcsvc-util</groupId>
     <artifactId>mcsvc-util-constants-service</artifactId>
-    <version>0.9.4-SNAPSHOT</version>
+    <version>0.9.5-SNAPSHOT</version>
     <name>mcsvc-util-constants-service</name>
     <description>Constants retrieved from config-server</description>
     <parent>
@@ -120,7 +120,7 @@
                     <to>
                         <image>jbprek/${project.artifactId}</image>
                         <tags>
-                            <tag>0.9.4</tag>
+                            <tag>0.9.5</tag>
                             <tag>latest</tag>
                         </tags>
                     </to>

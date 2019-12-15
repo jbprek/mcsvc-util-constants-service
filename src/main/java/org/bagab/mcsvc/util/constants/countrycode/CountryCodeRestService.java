@@ -1,13 +1,14 @@
 package org.bagab.mcsvc.util.constants.countrycode;
 
-import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Map;
+@Validated
 @RestController
 @RequestMapping(path = "/countries",
         produces = "application/json")
@@ -24,26 +25,31 @@ public class CountryCodeRestService {
         return repository.getInfoList();
     }
 
-    @GetMapping("/{searchToken}")
-    public ResponseEntity<CountryCodeInfo> search(@PathVariable("searchToken") String searchToken) {
-        // TODO Bad Request
-        if (searchToken == null)
-            return null;
-        val token = searchToken.trim();
-        val tokenLen = token.length();
-        CountryCodeInfo countryCodeInfo;
-        if (tokenLen == 2) {
-            countryCodeInfo = repository.getInfoByAlpha2().get(token);
-        } else if (tokenLen == 3) {
-            countryCodeInfo = repository.getInfoByAlpha3().get(token);
-        } else {
-            countryCodeInfo = repository.getInfoByName().get(token);
-        }
-        if (countryCodeInfo != null) {
-            return ResponseEntity.ok(countryCodeInfo);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+
+
+
+    @GetMapping(path = "/findBy/{key}/{value}")
+    public ResponseEntity<CountryCodeInfo> findBy(@PathVariable("key") @NotNull @CountryCodeFindKey String key,@PathVariable("value") @NotNull String value) {
+        CountryCodeInfo countryCodeInfo   = null;
+        switch (key) {
+            case "alpha3":
+                countryCodeInfo = repository.getInfoByAlpha3().get(value);
+                break;
+            case "alpha2":
+                countryCodeInfo = repository.getInfoByAlpha2().get(value);
+                break;
+            case "name":
+                countryCodeInfo = repository.getInfoByName().get(value);
+                break;
+            default:
+                throw new IllegalArgumentException("Unexpected default in switch");
+
         }
 
+        if (countryCodeInfo == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(countryCodeInfo);
     }
+
 }
