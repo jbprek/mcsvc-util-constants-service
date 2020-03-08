@@ -5,23 +5,68 @@
 
     <groupId>mcsvc-util</groupId>
     <artifactId>mcsvc-util-constants-service</artifactId>
-    <version>0.9.4-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>mcsvc-util-constants-service</name>
     <description>Constants retrieved from config-server</description>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.6.RELEASE</version>
+        <version>2.2.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.release>11</maven.compiler.release>
-        <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
-        <jib.version>1.2.0</jib.version>
+        <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
+        <jib.version>1.8.0</jib.version>
+        <spring-boot-admin.version>2.1.6</spring-boot-admin.version>
+        <my.version>0.0.2</my.version>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>java11</id>
+            <activation>
+                <jdk>11</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.release>11</maven.compiler.release>
+                <docker.base.image>gcr.io/distroless/java:11</docker.base.image>
+                <docker.target.tag>${my.version}-11</docker.target.tag>
+            </properties>
+        </profile>
+        <profile>
+            <id>java8</id>
+            <activation>
+                <jdk>8</jdk>
+            </activation>
+            <properties>
+                <java.version>8</java.version>
+                <docker.base.image>gcr.io/distroless/java:8</docker.base.image>
+                <docker.target.tag>${my.version}-8</docker.target.tag>
+            </properties>
+        </profile>
+    </profiles>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-dependencies</artifactId>
+                <version>${spring-boot-admin.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -35,6 +80,14 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.retry</groupId>
@@ -91,59 +144,40 @@
 
     </dependencies>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>jib-maven-plugin</artifactId>
-                <version>${jib.version}</version>
-                <configuration>
-                    <from>
-                        <image>gcr.io/distroless/java:11</image>
-                    </from>
-                    <to>
-                        <image>jbprek/${project.artifactId}</image>
-                        <tags>
-                            <tag>0.9.4</tag>
-                            <tag>latest</tag>
-                        </tags>
-                    </to>
-                    <container>
-                        <useCurrentTimestamp>true</useCurrentTimestamp>
-                        <jvmFlags>
-                            <jvmFlag>-Xmx128m</jvmFlag>
-                        </jvmFlags>
-                        <environment>
-                            <MCSVC_EUREKA_HOST_1_URL>set through --env</MCSVC_EUREKA_HOST_1_URL>
-                        </environment>
-                    </container>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>dockerBuild</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+                <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>${jib.version}</version>
+                    <configuration>
+                        <from>
+                            <image>${docker.base.image}</image>
+                        </from>
+                        <to>
+                            <image>${project.artifactId}</image>
+<!--                            <tag>latest</tag>-->
+<!--                            <tag>${my.version}</tag>-->
+                        </to>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>install</phase>
+                            <goals>
+                                <goal>dockerBuild</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+            </plugins>
+
+
     </build>
 
 
