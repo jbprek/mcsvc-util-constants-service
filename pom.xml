@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>mcsvc-util</groupId>
+    <groupId>org.prekezes.mcsvc.util</groupId>
     <artifactId>mcsvc-util-constants-service</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <name>mcsvc-util-constants-service</name>
@@ -11,43 +11,17 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.4.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>2.3.1.RELEASE</version>
+        <relativePath/>
     </parent>
 
     <properties>
+        <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
-        <jib.version>1.8.0</jib.version>
-        <spring-boot-admin.version>2.1.6</spring-boot-admin.version>
-        <my.version>0.0.2</my.version>
+        <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
+        <spring-boot-admin.version>2.2.3</spring-boot-admin.version>
     </properties>
-
-    <profiles>
-        <profile>
-            <id>java11</id>
-            <activation>
-                <jdk>11</jdk>
-            </activation>
-            <properties>
-                <maven.compiler.release>11</maven.compiler.release>
-                <docker.base.image>gcr.io/distroless/java:11</docker.base.image>
-                <docker.target.tag>${my.version}-11</docker.target.tag>
-            </properties>
-        </profile>
-        <profile>
-            <id>java8</id>
-            <activation>
-                <jdk>8</jdk>
-            </activation>
-            <properties>
-                <java.version>8</java.version>
-                <docker.base.image>gcr.io/distroless/java:8</docker.base.image>
-                <docker.target.tag>${my.version}-8</docker.target.tag>
-            </properties>
-        </profile>
-    </profiles>
 
     <dependencyManagement>
         <dependencies>
@@ -146,38 +120,20 @@
 
 
     <build>
-            <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                </plugin>
-                <plugin>
-                    <groupId>com.google.cloud.tools</groupId>
-                    <artifactId>jib-maven-plugin</artifactId>
-                    <version>${jib.version}</version>
-                    <configuration>
-                        <from>
-                            <image>${docker.base.image}</image>
-                        </from>
-                        <to>
-                            <image>${project.artifactId}</image>
-<!--                            <tag>latest</tag>-->
-<!--                            <tag>${my.version}</tag>-->
-                        </to>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <phase>install</phase>
-                            <goals>
-                                <goal>dockerBuild</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-
-            </plugins>
-
-
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <env>
+                            <BP_JVM_VERSION>11.0.8</BP_JVM_VERSION>
+                        </env>
+                        <name>jbprek/${project.artifactId}</name>
+                    </image>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
 

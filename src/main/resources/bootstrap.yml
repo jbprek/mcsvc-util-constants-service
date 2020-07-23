@@ -1,24 +1,26 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
+
+    fetch-registry: true
+    register-with-eureka: true
+
 spring:
   application:
     name: mcsvc-util-constants-service
+
   cloud:
     # Use of config server
     config:
       enabled: true
       discovery:
         enabled: true
-        serviceId: mcsvc-infra-config-service
+        serviceId: MCSVC-INFRA-CONFIG-SERVICE
       fail-fast: true
       retry:
         initial-interval: 8000
         max-attempts: 6
         max-interval: 128000
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://${EUREKA_HOST:localhost}:8761/eureka
-
-    fetch-registry: true
-    register-with-eureka: true
 
